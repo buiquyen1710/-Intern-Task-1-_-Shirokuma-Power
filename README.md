@@ -1,48 +1,55 @@
 # Task 1 _ Shirokuma Power
 
-## Mô tả dự án
-Dự án này triển khai một hệ thống giám sát tài nguyên hệ thống (CPU và RAM) sử dụng giao thức Modbus TCP. Bao gồm một server Modbus thu thập dữ liệu từ hệ thống và một client Modbus để đọc và hiển thị dữ liệu.
+## Project Description
+This project implements a system resource monitoring system (CPU and RAM) using the Modbus TCP protocol. It includes a Modbus server that collects data from the system and a Modbus client to read and display the data.
 
-## Cấu trúc dự án
-- `client_test.py`: File client test (có thể là phiên bản test của client).
-- `logger_server.py`: Server logger (có thể dùng để ghi log).
+## Project Structure
+- `client_test.py`: Test client file (possibly a test version of the client).
+- `logger_server.py`: Logger server (possibly used for logging).
 - `scenario_2/`:
-  - `client.py`: Client Modbus TCP để kết nối và đọc dữ liệu từ server.
-  - `server.py`: Server Modbus TCP thu thập và cung cấp dữ liệu CPU và RAM.
+  - `client.py`: Modbus TCP client to connect and read data from the server.
+  - `server.py`: Modbus TCP server that collects and provides CPU and RAM data.
 
-## Yêu cầu hệ thống
+## System Requirements
 - Python 3.x
-- Các thư viện: pymodbus, psutil
+- Libraries: pymodbus, psutil
 
-## Cài đặt
-1. Clone repository:
+## Installation
+1. Clone the repository:
    ```
    git clone https://github.com/buiquyen1710/-Intern-Task-1-_-Shirokuma-Power.git
    cd -Intern-Task-1-_-Shirokuma-Power
    ```
 
-2. Cài đặt dependencies:
+2. Install dependencies:
    ```
    pip install pymodbus psutil
    ```
 
-## Cách chạy
-1. Chạy server:
+## Usage
+1. Run the server:
    ```
    python scenario_2/server.py
    ```
-   Server sẽ chạy trên port 5020 và cập nhật dữ liệu CPU/RAM mỗi 2 giây.
+   The server will run on port 5020 and update CPU/RAM data every 2 seconds.
 
-2. Chạy client (trong terminal khác):
+2. Run the client (in a different terminal):
    ```
    python scenario_2/client.py
    ```
-   Client sẽ kết nối đến server và in ra phần trăm CPU và RAM mỗi 2 giây.
+   The client will connect to the server and print CPU and RAM percentages every 2 seconds.
 
-## Ghi chú
-- Đảm bảo port 5020 không bị chặn bởi firewall.
-- Server sử dụng psutil để lấy dữ liệu hệ thống thực tế.
-- Client kết nối đến localhost (127.0.0.1) trên port 5020.
+## Code Explanation
+### server.py
+This script sets up a Modbus TCP server using the pymodbus library. It creates a datastore with holding registers initialized to zeros. A background thread runs the `update_registers` function, which continuously monitors the system's CPU and RAM usage using the psutil library. Every 2 seconds, it updates the holding registers at address 0 with the current CPU percentage and RAM percentage. The server listens on all interfaces (0.0.0.0) at port 5020.
 
-## Liên hệ
-Nếu có câu hỏi, vui lòng tạo issue trên GitHub.
+### client.py
+This script acts as a Modbus TCP client. It connects to the server at localhost (127.0.0.1) on port 5020. In an infinite loop, it reads 2 holding registers starting from address 0. If the read is successful, it extracts the CPU and RAM values and prints them. The loop pauses for 2 seconds between reads to match the server's update interval.
+
+## Notes
+- Ensure port 5020 is not blocked by the firewall.
+- The server uses psutil to get real system data.
+- The client connects to localhost (127.0.0.1) on port 5020.
+
+## Contact
+If you have any questions, please create an issue on GitHub.
